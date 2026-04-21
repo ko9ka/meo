@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial;
+      background: linear-gradient(135deg, #ffd1dc, #ffb6c1, #ffc0cb);
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 320px;
+    }
+
+    h1 {
+      color: #ff4d88;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: #ff4d88;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #e6005c;
+      transform: scale(1.05);
+    }
+
+    .user {
+      margin-top: 20px;
+      color: #444;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h1>💗 Вход</h1>
+
+    <button onclick="loginWithGoogle()">
+      Войти через Google
+    </button>
+
+    <div class="user" id="user"></div>
+  </div>
+
+<script>
+  const SUPABASE_URL = "https://zwaslniacbzbcvzashvd.supabase.co";
+  const SUPABASE_ANON_KEY = "ТВОЙ_ANON_KEY";
+
+const supabase = window.supabase.createClient(
+  "https://zwaslniacbzbcvzashvd.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3YXNsbmlhY2J6YmN2emFzaHZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3NTQ4MDQsImV4cCI6MjA5MjMzMDgwNH0.x_g7pIMbELMyefexWrtLVcw7_KDHIxH953K4J1gwIsY"
+);
+  // Вход через Google
+  async function loginWithGoogle() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google'
+    });
+
+    if (error) {
+      alert("Ошибка: " + error.message);
+    }
+  }
+
+  // Проверка пользователя
+  async function checkUser() {
+    const { data } = await supabase.auth.getUser();
+
+    if (data?.user) {
+      document.getElementById("user").innerHTML =
+        "👤 Вы вошли как: " + data.user.email;
+    }
+  }
+
+  checkUser();
+</script>
+
+</body>
+</html>
